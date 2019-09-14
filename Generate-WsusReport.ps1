@@ -21,7 +21,7 @@ $newUpdates = Invoke-Command -Session $wsusSession -ScriptBlock {
     Get-WsusUpdate | Where-Object {$_.Approved -eq "NotApproved" -and $_.UpdatesSupersedingThisUpdate[0] -eq "None"} | Select-Object @{N="Update Name";E={$_.Update.Title}},Products,Classification
 }
 $wsusProducts = Invoke-Command -Session $wsusSession -ScriptBlock {
-    Get-WsusProduct | Where {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)}
+    Get-WsusProduct | Where-Object {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)}
 }
 
 $dcSession = New-PSSession $dc
@@ -36,7 +36,7 @@ $wsusReport = $wsusComputers | Foreach-Object {
             $curObj,
             $retiredMachineOU
         )
-        $Report = "" | Select HostName,LastContactDate,RecommendedAction
+        $Report = "" | Select-Object HostName,LastContactDate,RecommendedAction
         $curComputer = Get-ADComputer $curObj.FullDomainName.Split(".")[0]
         Write-Debug -Message "Current Computer from AD is $($curComputer.DNSHostName)"
         Write-Debug -Message "Computer Distinguished Name = $($curComputer.DistinguishedName)"
