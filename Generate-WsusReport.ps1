@@ -2,10 +2,11 @@ Param (
     $customerName,
     $wsusServer,
     $dc,
-    $retiredMachineOU,
+    $retiredMachineOU = "Retired",
     $FromAddress,
     $ToAddress,
-    $SmtpServer,
+    $SmtpServer = "smtp.office365.com",
+    $SmtpPort = 587,
     $EmailSubject = "WSUS Report"
 )
 
