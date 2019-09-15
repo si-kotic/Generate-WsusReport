@@ -38,7 +38,7 @@ Param (
         }
     )]$SmtpServer = "smtp.office365.com",
     [ValidateSet(25,587,465,2525)]$SmtpPort = 587,
-    [string]$EmailSubject = "WSUS Report"
+    [string]$EmailSubject = "WSUS Report - " + (Get-Date -Format "MMM yyyy") + " - $wsusServer"
 )
 
 $wsusSession = New-PSSession $wsusServer
