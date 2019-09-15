@@ -30,7 +30,7 @@ Param (
             Throw "$_ is not a valid email address"
         }
     })]$ToAddress,
-    [Parameter(Mandatory)][string][ValidateScript({
+    [string][ValidateScript({
         IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
             $true
         } ELSE {
