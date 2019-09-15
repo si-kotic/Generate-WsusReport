@@ -1,13 +1,14 @@
 Param (
-    $customerName,
-    $wsusServer,
-    $dc,
-    $retiredMachineOU = "Retired",
-    $FromAddress,
-    $ToAddress,
-    $SmtpServer = "smtp.office365.com",
-    $SmtpPort = 587,
-    $EmailSubject = "WSUS Report"
+    [CmdletBinding()]
+    [string]$customerName,
+    [Parameter(Mandatory)][string]$wsusServer,
+    [Parameter(Mandatory)][string]$dc,
+    [string]$retiredMachineOU = "Retired",
+    [Parameter(Mandatory)][string]$FromAddress,
+    [Parameter(Mandatory)][string]$ToAddress,
+    [Parameter(Mandatory)][string]$SmtpServer = "smtp.office365.com",
+    [ValidateSet(25,587,465,2525)]$SmtpPort = 587,
+    [string]$EmailSubject = "WSUS Report"
 )
 
 $wsusSession = New-PSSession $wsusServer
