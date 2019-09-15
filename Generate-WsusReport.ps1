@@ -1,12 +1,42 @@
 Param (
     [CmdletBinding()]
     [string]$customerName,
-    [Parameter(Mandatory)][string]$wsusServer,
-    [Parameter(Mandatory)][string]$dc,
+    [Parameter(Mandatory)][string][ValidateScript(
+        IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
+            $true
+        } ELSE {
+            Throw "$_ is not a valid email address"
+        }
+    )]$wsusServer,
+    [Parameter(Mandatory)][string][ValidateScript(
+        IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
+            $true
+        } ELSE {
+            Throw "$_ is not a valid email address"
+        }
+    )]$dc,
     [string]$retiredMachineOU = "Retired",
-    [Parameter(Mandatory)][string]$FromAddress,
-    [Parameter(Mandatory)][string]$ToAddress,
-    [Parameter(Mandatory)][string]$SmtpServer = "smtp.office365.com",
+    [Parameter(Mandatory)][string][ValidateScript(
+        IF ($_ -match '(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)') {
+            $true
+        } ELSE {
+            Throw "$_ is not a valid email address"
+        }
+    )]$FromAddress,
+    [Parameter(Mandatory)][string][ValidateScript(
+        IF ($_ -match '(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)') {
+            $true
+        } ELSE {
+            Throw "$_ is not a valid email address"
+        }
+    )]$ToAddress,
+    [Parameter(Mandatory)][string][ValidateScript(
+        IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
+            $true
+        } ELSE {
+            Throw "$_ is not a valid email address"
+        }
+    )]$SmtpServer = "smtp.office365.com",
     [ValidateSet(25,587,465,2525)]$SmtpPort = 587,
     [string]$EmailSubject = "WSUS Report"
 )
