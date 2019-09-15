@@ -41,7 +41,11 @@ Param (
     [string]$EmailSubject = "WSUS Report - " + (Get-Date -Format "MMM yyyy") + " - $wsusServer"
 )
 
-$wsusSession = New-PSSession $wsusServer
+$wsusSession = New-PSSession $wsusServer -ErrorVariable err -ErrorAction SilentlyContinue
+IF ($err) {
+    Write-Output "Failed to connect to WSUS Server: $wsusServer"
+    return
+}
 Invoke-Command -Session $wsusSession -ScriptBlock {
     Import-Module UpdateServices
 }
@@ -55,7 +59,11 @@ $wsusProducts = Invoke-Command -Session $wsusSession -ScriptBlock {
     Get-WsusProduct | Where-Object {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)}
 }
 
-$dcSession = New-PSSession $dc
+$dcSession = New-PSSession $dc -ErrorVariable err -ErrorAction SilentlyContinue
+IF ($err) {
+    Write-Output "Failed to connect to Domain Controller: $dc"
+    return
+}
 Invoke-Command -Session $dcSession -ScriptBlock {
     Import-Module ActiveDirectory
 }
