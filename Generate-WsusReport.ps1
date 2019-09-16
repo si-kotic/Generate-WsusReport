@@ -53,7 +53,7 @@ $wsusComputers = Invoke-Command -Session $wsusSession -ScriptBlock {
     Get-WsusComputer | Where-Object {$_.LastSyncTime -lt (Get-Date).AddMonths(-1)}
 }
 $newUpdates = Invoke-Command -Session $wsusSession -ScriptBlock {
-    Get-WsusUpdate | Where-Object {$_.Approved -eq "NotApproved" -and $_.UpdatesSupersedingThisUpdate[0] -eq "None"} | Select-Object @{N="Update Name";E={$_.Update.Title}},Products,Classification
+    Get-WsusUpdate | Where-Object {$_.Approved -eq "NotApproved" -and $_.UpdatesSupersedingThisUpdate[0] -eq "None"} | Select-Object @{N="Update Name";E={$_.Update.Title}},Products,Classification,@{N="KB Article";E={$_.Update.AdditionalInformationUrls[0]}}
 }
 $wsusProducts = Invoke-Command -Session $wsusSession -ScriptBlock {
     Get-WsusProduct | Where-Object {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)}
