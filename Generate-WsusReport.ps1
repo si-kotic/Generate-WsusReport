@@ -38,7 +38,8 @@ Param (
         }
     })]$SmtpServer = "smtp.office365.com",
     [ValidateSet(25,587,465,2525)]$SmtpPort = 587,
-    [string]$EmailSubject = "WSUS Report - " + (Get-Date -Format "MMM yyyy") + " - $wsusServer"
+    [string]$EmailSubject = "WSUS Report - " + (Get-Date -Format "MMM yyyy") + " - $wsusServer",
+    $Office365CredentialFile
 )
 
 $wsusSession = New-PSSession $wsusServer -ErrorVariable err -ErrorAction SilentlyContinue
@@ -157,4 +158,11 @@ $updatesHTML
 </html>
 "@
 
-Send-MailMessage -From $FromAddress -To $ToAddress -SMTPServer $SmtpServer -Subject $EmailSubject -BodyAsHTML $mailBody
+IF ($Office365Credentials) {
+    $creds = Import-CliXml -Path $Office365CredentialFile
+}
+IF ($smtpServer -eq "smtp.office365.com") {
+    Send-MailMessage -From $FromAddress -To $ToAddress -SMTPServer $SmtpServer -Subject $EmailSubject -BodyAsHTML $mailBody -Credential $creds -UseSsl
+} ELSE {
+    Send-MailMessage -From $FromAddress -To $ToAddress -SMTPServer $SmtpServer -Subject $EmailSubject -BodyAsHTML $mailBody
+}
