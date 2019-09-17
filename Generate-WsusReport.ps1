@@ -105,7 +105,7 @@ IF ($wsusReport) {
     [string]$computersHTML = "All machines have checked in within the last month."
 }
 IF ($newUpdates) {
-    [string]$updatesHTML = $newUpdates | Select-Object "Update Name",Products,Classification | ConvertTo-Html -Fragment
+    [string]$updatesHTML = $newUpdates | Select-Object "Update Name",Products,Classification,"KB Article" | ConvertTo-Html -Fragment
 } ELSE {
     [string]$updatesHTML = "There are no unapproved updates to report."
 }
