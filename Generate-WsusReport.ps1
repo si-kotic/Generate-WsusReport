@@ -121,6 +121,7 @@ $mailBody = @"
 <style>
 body {
 font-family: verdana
+font-size: 10pt
 }
 h1 {
 background-color: deepskyblue;
