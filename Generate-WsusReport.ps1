@@ -57,7 +57,7 @@ $newUpdates = Invoke-Command -Session $wsusSession -ScriptBlock {
     Get-WsusUpdate | Where-Object {$_.Approved -eq "NotApproved" -and $_.UpdatesSupersedingThisUpdate[0] -eq "None"} | Select-Object @{N="Update Name";E={$_.Update.Title}},Products,Classification,@{N="KB Article";E={$_.Update.AdditionalInformationUrls[0]}}
 }
 $wsusProducts = Invoke-Command -Session $wsusSession -ScriptBlock {
-    Get-WsusProduct | Where-Object {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)}
+    Get-WsusProduct | Where-Object {$_.Product.ArrivalDate -gt (Get-Date).AddMonths(-1)} | Select-Object @{N="Product Name";E={$_.Product.Title}},@{N="Description";E={$_.Product.Description}}
 }
 
 $dcSession = New-PSSession $dc -ErrorVariable err -ErrorAction SilentlyContinue
@@ -149,7 +149,7 @@ background-color: #f2f2f2;
 </style>
 </head>
 <body>
-<h1>Updates released in the last month:</h1>
+<h1>Products released in the last month:</h1>
 $productsHTML
 <h1>Machines which have not checked in during the last month:</h1>
 $computersHTML
