@@ -159,7 +159,7 @@ $updatesHTML
 </html>
 "@
 
-IF ($Office365Credentials) {
+IF ($Office365CredentialFile) {
     $creds = Import-CliXml -Path $Office365CredentialFile
 }
 IF ($smtpServer -eq "smtp.office365.com") {
