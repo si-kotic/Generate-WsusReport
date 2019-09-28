@@ -5,14 +5,14 @@ Param (
         IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
             $true
         } ELSE {
-            Throw "$_ is not a valid email address"
+            Throw "$_ is not a valid domain name"
         }
     })]$wsusServer,
     [Parameter(Mandatory)][string][ValidateScript({
         IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
             $true
         } ELSE {
-            Throw "$_ is not a valid email address"
+            Throw "$_ is not a valid domain name"
         }
     })]$dc,
     [string]$retiredMachineOU = "Retired",
@@ -34,7 +34,7 @@ Param (
         IF ($_ -match '(^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$)') {
             $true
         } ELSE {
-            Throw "$_ is not a valid email address"
+            Throw "$_ is not a valid domain name"
         }
     })]$SmtpServer = "smtp.office365.com",
     [ValidateSet(25,587,465,2525)]$SmtpPort = 587,
