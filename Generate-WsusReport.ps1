@@ -76,8 +76,8 @@ $wsusReport = $wsusComputers | Foreach-Object {
             $curObj,
             $retiredMachineOU
         )
-        $Report = "" | Select-Object HostName,LastContactDate,RecommendedAction
-        $curComputer = Get-ADComputer $curObj.FullDomainName.Split(".")[0]
+        $Report = "" | Select-Object HostName,LastContactDate,LastLogonDate,RecommendedAction
+        $curComputer = Get-ADComputer $curObj.FullDomainName.Split(".")[0] -Properties LastLogonDate
         Write-Debug -Message "Current Computer from AD is $($curComputer.DNSHostName)"
         Write-Debug -Message "Computer Distinguished Name = $($curComputer.DistinguishedName)"
         Write-Debug -Message "Computer AD Account Enabled:  $($curComputer.Enabled)"
@@ -85,12 +85,14 @@ $wsusReport = $wsusComputers | Foreach-Object {
             Write-Debug -Message "Computer identified as Retired"
             $Report.HostName = $curObj.FullDomainName
             $Report.LastContactDate = $curObj.LastSyncTime
+            $Report.LastLogonDate = $curComputer.LastLogonDate
             $Report.RecommendedAction = "Machine retired.  Delete from WSUS."
             $Report
         } ELSE {
             Write-Debug -Message "Computer identified as Active"
             $Report.HostName = $curObj.FullDomainName
             $Report.LastContactDate = $curObj.LastSyncTime
+            $Report.LastLogonDate = $curComputer.LastLogonDate
             $Report.RecommendedAction = "Turn on machine and check for updates."
             $Report
         }
