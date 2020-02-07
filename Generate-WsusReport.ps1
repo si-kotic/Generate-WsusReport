@@ -97,7 +97,7 @@ $wsusReport = $wsusComputers | Foreach-Object {
             $Report
         }
     }
-} | Select-Object HostName,LastContactDate,RecommendedAction
+} | Select-Object HostName,LastContactDate,LastLogonDate,RecommendedAction
 Remove-PSSession -Session $wsusSession
 Remove-PSSession -Session $dcSession
 
